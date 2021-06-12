@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.Settings"
+    android:padding="12dp">
+
+
+
+    <!-- Life Story Switch -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/life_story">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/life_story_title"
+                android:textColor="@color/purple_500">
+            </TextView>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/life_story_desc">
+            </TextView>
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/life_story_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="7dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/purple_500"
+            android:layout_below="@+id/life_story"/>
+    </RelativeLayout>
+
+
+
+    <!-- Family Tree Lines Switch -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/family_lines">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/family_lines"
+                android:textColor="@color/purple_500">
+            </TextView>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/family_lines_desc">
+            </TextView>
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/family_lines_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="7dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/purple_500"
+            android:layout_below="@+id/family_lines"/>
+    </RelativeLayout>
+
+
+
+    <!-- Spouse Lines Switch -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/spouse_lines">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/spouse_lines"
+                android:textColor="@color/purple_500">
+            </TextView>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/spouse_lines_desc">
+            </TextView>
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/spouse_lines_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="7dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/purple_500"
+            android:layout_below="@+id/spouse_lines"/>
+    </RelativeLayout>
+
+
+
+    <!-- Fathers Side Switch -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/fathers_side">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/father_side"
+                android:textColor="@color/purple_500">
+            </TextView>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/father_side_desc">
+            </TextView>
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/fathers_side_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="7dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/purple_500"
+            android:layout_below="@+id/fathers_side"/>
+    </RelativeLayout>
+
+
+
+    <!-- Mothers Side Switch -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/mothers_side">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/mother_side"
+                android:textColor="@color/purple_500">
+            </TextView>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/mother_side_desc">
+            </TextView>
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/mothers_side_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="7dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/purple_500"
+            android:layout_below="@+id/mothers_side"/>
+    </RelativeLayout>
+
+
+
+    <!-- Male Events Switch -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/male_events">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/male_events"
+                android:textColor="@color/purple_500">
+            </TextView>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/male_events_desc">
+            </TextView>
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/male_events_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="7dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/purple_500"
+            android:layout_below="@+id/male_events"/>
+    </RelativeLayout>
+
+
+
+    <!-- Female Events Switch -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/female_events">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/female_events"
+                android:textColor="@color/purple_500">
+            </TextView>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/female_events_desc">
+            </TextView>
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/female_events_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="7dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/purple_500"
+            android:layout_below="@+id/female_events"/>
+    </RelativeLayout>
+
+
+
+    <!-- Logout Button -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/logout"
+            android:text="@string/logout"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="12dp">
+        </Button>
+    </RelativeLayout>
+
+</LinearLayout>
+

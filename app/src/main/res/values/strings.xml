@@ -1,0 +1,44 @@
+<resources>
+    <!-- Menu -->
+    <string name="app_name">FamilyMap</string>
+    <string name="app_search">FamilyMap: Search</string>
+    <string name="app_settings">FamilyMap: Settings</string>
+
+    <!-- Login -->
+    <string name="server_host">Server Host:</string>
+    <string name="server_port">Server Port:</string>
+    <string name="username">Username:</string>
+    <string name="password">Password:</string>
+    <string name="first_name">First Name:</string>
+    <string name="last_name">Last Name:</string>
+    <string name="email">Email:</string>
+    <string name="gender">Gender:</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="sign_in">Sign In</string>
+    <string name="register">Register</string>
+
+    <!-- Events -->
+    <string name="event_name">Click a location marker</string>
+    <string name="event_desc">To see event information</string>
+
+    <!-- Settings -->
+    <string name="life_story_title">Life Story Lines</string>
+    <string name="life_story_desc">SHOW LIFE STORY LINES</string>
+    <string name="family_lines">Family Tree Lines</string>
+    <string name="family_lines_desc">SHOW FAMILY TREE LINES</string>
+    <string name="spouse_lines">Spouse Lines</string>
+    <string name="spouse_lines_desc">SHOW SPOUSE LINES</string>
+    <string name="father_side">Father\'s Side</string>
+    <string name="father_side_desc">FILTER BY FATHER\'S SIDE OF FAMILY</string>
+    <string name="mother_side">Mother\'s Side</string>
+    <string name="mother_side_desc">FILTER BY MOTHERS\'s SIDE OF FAMILY</string>
+    <string name="male_events">Male Events</string>
+    <string name="male_events_desc">FILTER EVENTS BASED ON GENDER</string>
+    <string name="female_events">Female Events</string>
+    <string name="female_events_desc">FILTER EVENTS BASED ON GENDER</string>
+    <string name="logout">Logout</string>
+    <string name="logout_desc">RETURN TO LOGIN SCREEN</string>
+
+
+</resources>
