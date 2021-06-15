@@ -23,6 +23,7 @@
             android:contentDescription="Icon"
             android:layout_gravity="center"
             android:layout_marginLeft="12dp"
+            android:id="@+id/event_image"
             android:src="@drawable/ic_baseline_location_on_24"/>
 
         <LinearLayout

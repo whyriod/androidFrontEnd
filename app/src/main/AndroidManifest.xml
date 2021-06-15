@@ -15,8 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FamillyMap"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.Event"></activity>
-        <activity android:name=".ui.Person" /> <!-- Main Activity -->
+        <activity android:name=".ui.EventActivity"
+            android:label="@string/event_activity"
+            android:parentActivityName=".ui.MainActivity"/>
+
+        <activity android:name=".ui.PersonActivity"
+            android:label="@string/person_activity"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <!-- Main Activity -->
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
@@ -28,11 +35,11 @@
             </intent-filter>
         </activity> <!-- Search Activity -->
         <activity
-            android:name=".ui.Search"
+            android:name=".ui.SearchActivity"
             android:label="@string/app_search"
             android:parentActivityName=".ui.MainActivity" /> <!-- Settings Activity -->
         <activity
-            android:name=".ui.Settings"
+            android:name=".ui.SettingsActivity"
             android:label="@string/app_settings"
             android:parentActivityName=".ui.MainActivity" /> <!-- Google Maps API Key -->
         <meta-data

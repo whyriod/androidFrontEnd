@@ -11,6 +11,7 @@ import java.net.URL;
 import request.AuthRequest;
 import request.LoginRequest;
 import request.RegisterRequest;
+import result.ClearResult;
 import result.EventsResult;
 import result.LoginResult;
 import result.PersonsResult;
@@ -22,13 +23,25 @@ import result.RegisterResult;
  */
 public class ServerProxy {
 
+    //The Single instance
     private static ServerProxy _instance;
 
     String hostname;
     int port;
 
+
+    /***
+     * Private Constructor
+     */
     private ServerProxy(){ }
 
+
+
+    /***
+     * Singleton Principle for Server Proxy (I just wanted there to be only one proxy)
+     *
+     * @return - The one and only Proxy
+     */
     public static ServerProxy getInstance(){
         if(_instance == null){
             _instance = new ServerProxy();
@@ -36,13 +49,7 @@ public class ServerProxy {
         return _instance;
     }
 
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
-    }
 
-    public void setPort(int port) {
-        this.port = port;
-    }
 
     /***
      * Takes a RegisterRequest object and sends the request to the servers
@@ -58,6 +65,7 @@ public class ServerProxy {
         Gson gson = new Gson();
 
         try {
+            //Create the Url and config object.
             URL url = new URL("http://" + hostname + ":" + port + "/user/register");
             HttpURLConnection http = (HttpURLConnection)url.openConnection();
 
@@ -73,7 +81,7 @@ public class ServerProxy {
             InputStream respBody;
             String respData;
 
-
+            //Interpret the response.
             if (http.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 System.out.println("Successfully registered.");
                 respBody = http.getInputStream();
@@ -109,6 +117,7 @@ public class ServerProxy {
         Gson gson = new Gson();
 
         try {
+            //Create the Url and config object.
             URL url = new URL("http://" + hostname + ":" + port + "/user/login");
             HttpURLConnection http = (HttpURLConnection)url.openConnection();
 
@@ -124,6 +133,7 @@ public class ServerProxy {
             InputStream respBody;
             String respData;
 
+            //Interpret the response.
             if (http.getResponseCode() == HttpURLConnection.HTTP_OK){
                 System.out.println("Successfully logged in.");
                 respBody = http.getInputStream();
@@ -159,11 +169,12 @@ public class ServerProxy {
         Gson gson = new Gson();
 
         try {
+            //Create the Url and config object.
             URL url = new URL("http://" + hostname + ":" + port + "/person");
             HttpURLConnection http = (HttpURLConnection)url.openConnection();
 
             http.setRequestMethod("GET");
-            http.setDoOutput(false);	// There is a request body
+            http.setDoOutput(false);	// There is no request body
             http.addRequestProperty("Authorization", r.getAuthtoken());
             http.addRequestProperty("Accept", "application/json"); //Json
             http.connect();
@@ -171,6 +182,7 @@ public class ServerProxy {
             InputStream respBody;
             String respData;
 
+            //Interpret the response.
             if (http.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 System.out.println("Successfully retrieved persons.");
                 respBody = http.getInputStream();
@@ -207,11 +219,12 @@ public class ServerProxy {
         Gson gson = new Gson();
 
         try {
+            //Create the Url and config object.
             URL url = new URL("http://" + hostname + ":" + port + "/events");
             HttpURLConnection http = (HttpURLConnection)url.openConnection();
 
             http.setRequestMethod("GET");
-            http.setDoOutput(false);	// There is a request body
+            http.setDoOutput(false);	// There is no request body
             http.addRequestProperty("Authorization", r.getAuthtoken());
             http.addRequestProperty("Accept", "application/json"); //Json
             http.connect();
@@ -219,6 +232,7 @@ public class ServerProxy {
             InputStream respBody;
             String respData;
 
+            //Interpret the response.
             if (http.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 System.out.println("Successfully retrieved events.");
                 respBody = http.getInputStream();
@@ -237,5 +251,53 @@ public class ServerProxy {
 
         }
         return result;
+    }
+
+    ClearResult clear(){
+
+        ClearResult result;
+        Cereal cereal = new Cereal();
+        Gson gson = new Gson();
+
+        try {
+            //Create the Url and config object.
+            URL url = new URL("http://" + hostname + ":" + port + "/clear");
+            HttpURLConnection http = (HttpURLConnection)url.openConnection();
+
+            http.setRequestMethod("POST");
+            http.setDoOutput(false);	// There is no request body
+            http.connect();
+
+            InputStream respBody;
+            String respData;
+
+            //Interpret the response.
+            if (http.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                System.out.println("Successfully cleared Database.");
+                respBody = http.getInputStream();
+                respData = cereal.readString(respBody);
+            }
+            else {
+                System.out.println("Error: " + http.getResponseMessage());
+                respBody = http.getErrorStream();
+                respData = cereal.readString(respBody);
+            }
+            result = gson.fromJson(respData,ClearResult.class);
+        }
+        catch (IOException e) {
+            result = new ClearResult("Error: Failed in SeverProxy persons catch",false);
+            e.printStackTrace();
+
+        }
+        return result;
+    }
+
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }

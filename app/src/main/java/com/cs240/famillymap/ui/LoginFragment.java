@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.cs240.famillymap.R;
 import com.cs240.famillymap.model.DataCache;
+import com.cs240.famillymap.model.Helper;
 import com.cs240.famillymap.net.ServerProxy;
 
 import java.util.ArrayList;
@@ -45,6 +46,9 @@ import result.LoginResult;
 import result.PersonsResult;
 import result.RegisterResult;
 
+/***
+ * Handle a User logging in.
+ */
 public class LoginFragment extends Fragment {
 
     private View rootView;
@@ -70,9 +74,12 @@ public class LoginFragment extends Fragment {
     private Button register;
 
 
+
     public LoginFragment() {
         // Required empty public constructor
     }
+
+
 
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
@@ -80,10 +87,14 @@ public class LoginFragment extends Fragment {
     }
 
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,6 +132,7 @@ public class LoginFragment extends Fragment {
 
         enableButtons();
 
+        //Listeners: If there is text enable or disable the Login or register buttons:
 
         //Host listener
         serverHost.addTextChangedListener(new TextWatcher() {
@@ -260,6 +272,9 @@ public class LoginFragment extends Fragment {
 
 
 
+    //If the user has filled all text, enable the login and register buttons.
+    //If the user has filled in the host, port, username, and password, then enable login.
+    //Otherwise, they are both disabled.
     private void enableButtons(){
         if(serverHostStr.length() != 0 && serverPortStr.length() != 0 &&
             usernameStr.length() != 0 && passwordStr.length() != 0 &&
@@ -281,8 +296,10 @@ public class LoginFragment extends Fragment {
     }
 
 
+
     /***
-     *
+     * Create a New Thread. If the user successfully logs in, then call main activity to
+     * swap the map fragments. Otherwise, let the user know the error.
      */
     private void signIn(){
         proxySetup();
@@ -291,7 +308,7 @@ public class LoginFragment extends Fragment {
             public void handleMessage(Message message){
                 Bundle bundle = message.getData();
                 if(bundle.getBoolean("Outcome")){
-                    login();
+                    ((MainActivity) getActivity()).login();
                 }
                 else{
                     Toast.makeText(requireActivity().getApplicationContext(),
@@ -308,7 +325,8 @@ public class LoginFragment extends Fragment {
 
 
     /***
-     *
+     * Create a New Thread. If the user successfully registers in, then call main activity to
+     * swap the map fragments. Otherwise, let the user know the error.
      */
     public void register(){
         proxySetup();
@@ -317,7 +335,7 @@ public class LoginFragment extends Fragment {
             public void handleMessage(Message message){
                 Bundle bundle = message.getData();
                 if(bundle.getBoolean("Outcome")){
-                    login();
+                    ((MainActivity) getActivity()).login();
                 }
                 else{
                     Toast.makeText(requireActivity().getApplicationContext(),
@@ -331,11 +349,11 @@ public class LoginFragment extends Fragment {
         executor.submit(task);
     }
 
-    private void login(){
-        ((MainActivity) getActivity()).login();
-    }
 
 
+    /***
+     * Setup the server Proxy with the user input for host and server.
+     */
     private void proxySetup(){
         //Setup Server Proxy
         ServerProxy sp = ServerProxy.getInstance();
@@ -344,11 +362,22 @@ public class LoginFragment extends Fragment {
     }
 
 
+
+    /***
+     * Create a login request object from the user input.
+     * @return - The new LoginRequest object.
+     */
     private LoginRequest getSignIn(){
         //New Login Object
         return new LoginRequest(username.getText().toString(), password.getText().toString());
     }
 
+
+
+    /***
+     * Create a register request object from the user input.
+     * @return - The new RegisterRequest object.
+     */
     private RegisterRequest getRegister(){
         String sex;
 
@@ -369,8 +398,11 @@ public class LoginFragment extends Fragment {
     }
 
 
+
     /***
-     *
+     * The background thread. It will attempt to login/register. If successful, it will
+     * use the server proxy to load the dataCache with events and persons relevant
+     * to the user.
      */
     private static class LoginTask implements Runnable{
 
@@ -379,23 +411,44 @@ public class LoginFragment extends Fragment {
         private final RegisterRequest registerRequest;
         private AuthRequest aRequest;
         private String personID;
+        private DataCache cache;
 
+
+
+        /***
+         * LoginTask Constructor
+         * @param messageHandler - The handler to report the outcome.
+         * @param loginRequest - The LoginRequest.
+         */
         public LoginTask(Handler messageHandler, LoginRequest loginRequest){
             this.messageHandler = messageHandler;
             this.registerRequest = null;
             this.loginRequest = loginRequest;
         }
 
+
+
+        /***
+         * RegisterRequest Handler
+         * @param messageHandler - The handler to report the outcome.
+         * @param registerRequest - The RegisterRequest.
+         */
         public LoginTask(Handler messageHandler, RegisterRequest registerRequest){
             this.messageHandler = messageHandler;
             this.registerRequest = registerRequest;
             this.loginRequest = null;
         }
 
+
+
+        /***
+         * The Single run method. Attempts to login/register.
+         * If successful, it will load the data.
+         */
         @Override
         public void run() {
             ServerProxy proxy = ServerProxy.getInstance();
-
+            cache = DataCache.getInstance();
             //Login Request
             if(loginRequest != null){
                 LoginResult result = proxy.login(loginRequest);
@@ -422,6 +475,14 @@ public class LoginFragment extends Fragment {
             }
         }
 
+
+
+        /***
+         * Send the message to the handler.
+         *
+         * @param m - The message to send.
+         * @param o - boolean for outcome of the event.
+         */
         private void sendMessage(String  m, Boolean o){
             Message message = Message.obtain();
             Bundle msgBundle = new Bundle();
@@ -431,15 +492,33 @@ public class LoginFragment extends Fragment {
             messageHandler.sendMessage(message);
         }
 
+
+
+        /***
+         * Load event and personData from the proxy. Then precompute: paternal, maternal,
+         * male, female, and get filter events ready to filter. The code create 2 deep copies
+         * for the filter data because if I don't and call clear() in my filter function,
+         * It destroys my original data set.
+         */
         private void loadData(){
             ServerProxy proxy = ServerProxy.getInstance();
             EventsResult eResult = proxy.events(aRequest);
             PersonsResult pResult = proxy.persons(aRequest);
-            DataCache cache = DataCache.getInstance();
+
             Map<String, Person> peopleMap = new HashMap<>();
             Map<String, Event> eventsMap = new HashMap<>();
             Map<String, List<Event>> events = new HashMap<>();
-            List<Event> personEvents = new ArrayList<>();
+            ArrayList<Event> personEvents = new ArrayList<>();
+            Map<String, Float> eventColor = new HashMap<>();
+
+            Map<String, Person> male = new HashMap<>();
+            Map<String, Person> female = new HashMap<>();
+
+            Map<String, Person> filterPeopleMap = new HashMap<>();
+            Map<String, Event> filterEventsMap = new HashMap<>();
+            Map<String, List<Event>> filterEvents = new HashMap<>();
+            ArrayList<Event> filterPersonEvents = new ArrayList<>();
+
 
             //Set PersonId for current User
             cache.setPersonID(personID);
@@ -447,30 +526,116 @@ public class LoginFragment extends Fragment {
             //Set Person Map
             for(Person p: pResult.getData()){
                 peopleMap.put(p.getPersonID(),p);
+                filterPeopleMap.put(p.getPersonID(),p);
+                if(p.getGender().equals("m")){
+                    male.put(p.getPersonID(),p);
+                }
+                else if(p.getGender().equals("f")){
+                    female.put(p.getPersonID(),p);
+                }
             }
             cache.setPeopleMap(peopleMap);
+            cache.setFilterPeople(filterPeopleMap);
+            cache.setMale(male);
+            cache.setFemale(female);
 
             //Set Event Map
             for(Event e: eResult.getData()){
+                e.setEventType(e.getEventType().toUpperCase());
                 eventsMap.put(e.getEventID(),e);
+                filterEventsMap.put(e.getEventID(),e);
             }
             cache.setEventsMap(eventsMap);
+            cache.setFilterEventMap(filterEventsMap);
+
+            int index = 0;
+            //Set Event Colors
+            for(Event e: eResult.getData()){
+                if(eventColor.get(e.getEventType().toUpperCase()) == null){
+                    //Recycle Colors
+                    if(index >= cache.getColors().size()){
+                        index = 0;
+                    }
+                    eventColor.put(e.getEventType().toUpperCase(),cache.getColors().get(index));
+                    index++;
+                }
+            }
+            cache.seteventColors(eventColor);
 
             //Set map for Each Person that contains their events
             for(Person p: pResult.getData()){
                 personEvents.clear();
+                filterPersonEvents.clear();
                 //For each event
                 for(Event e: eResult.getData()){
                     if(p.getPersonID().equals(e.getPersonID())){
                         personEvents.add(e);
+                        filterPersonEvents.add(e);
                     }
                 }
-                events.put(p.getPersonID(),personEvents);
+                Helper helper = new Helper();
+                filterEvents.put(p.getPersonID(),helper.sortYear(personEvents));
+                events.put(p.getPersonID(),helper.sortYear(personEvents));
             }
             cache.setEvents(events);
+            cache.setFilterEvents(filterEvents);
 
-            sendMessage("Welcome: " + peopleMap.get(personID).getFirstName() + " " +
-                    peopleMap.get(personID).getLastName() + "!", true);
+            getPaternal();
+            getMaternal();
+            sendMessage("Success", true);
+        }
+
+
+
+        /***
+         * If there is a father, call ancestors to recursively add paternal.
+         */
+        private void getPaternal(){
+            Map<String, Person> paternal = new HashMap<>();
+            String fatherID = cache.getPeopleMap().get(cache.getPersonID()).getFatherID();
+            if(!fatherID.equals(null)){
+                ancestors(paternal,fatherID);
+            }
+            cache.setPaternal(paternal);
+        }
+
+
+
+        /***
+         * If there is a mother, call ancestors to recursively add ,maternal.
+         */
+        private void getMaternal(){
+            Map<String, Person> maternal = new HashMap<>();
+            String motherID = cache.getPeopleMap().get(cache.getPersonID()).getMotherID();
+            if(!motherID.equals(null)){
+                ancestors(maternal,motherID);
+            }
+            cache.setMaternal(maternal);
+        }
+
+
+
+        /***
+         * Recursive function. Takes a map of ancestors and adds the current person to it.
+         * If there are additional fathers or mothers to add, it will recursively add them.
+         *
+         * @param ancestors - The map to add to.
+         * @param personID - The current ancestor to add and check for further ancestors.
+         */
+        private void ancestors(Map<String, Person> ancestors, String personID){
+
+            Person person = cache.getPeopleMap().get(personID);
+
+            ancestors.put(personID,person);
+            String fatherID = person.getFatherID();
+            String motherID = person.getMotherID();
+
+            if(fatherID != null){
+                ancestors(ancestors,fatherID);
+            }
+            if(motherID != null){
+                ancestors(ancestors,motherID);
+            }
         }
     };
 }

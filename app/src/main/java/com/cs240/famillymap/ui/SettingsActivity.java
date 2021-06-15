@@ -10,7 +10,11 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-public class Settings extends AppCompatActivity {
+/***
+ * Allows user to change settings for lines, and events show.
+ * Also allows user to logout.
+ */
+public class SettingsActivity extends AppCompatActivity {
 
     private Switch lifeStoryLines;
     private Switch familyTreeLines;
@@ -27,8 +31,10 @@ public class Settings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        //Setup Back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //Wire-up
         lifeStoryLines = findViewById(R.id.life_story_switch);
         familyTreeLines = findViewById(R.id.family_lines_switch);
         spouseLines = findViewById(R.id.spouse_lines_switch);
@@ -48,6 +54,8 @@ public class Settings extends AppCompatActivity {
             }
         });
 
+        //Settings Listeners: Set the cache setting for that switch, and set that a new Filter
+        //Needs to be applied.
         lifeStoryLines.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -105,46 +113,27 @@ public class Settings extends AppCompatActivity {
         });
     }
 
+    //Set cache to not logged in and return to Main activity.
     private void logout(){
         cache.setLoggedIn(false);
         finish();
     }
 
-    private void setSwitch(){
-        checkLifeStoryLines();
-        checkFamilyTreeLines();
-        checkSpouseLines();
-        checkFatherSide();
-        checkMotherSide();
-        checkMaleEvents();
-        checkFemaleEvents();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Check to make sure the switches are correct.
+        setSwitch();
     }
 
-    private void checkLifeStoryLines(){
+    //Set the switch to what it currently is in the cache.
+    private void setSwitch() {
         lifeStoryLines.setChecked(cache.isLifeStoryLines());
-    }
-
-    private void checkFamilyTreeLines(){
         familyTreeLines.setChecked(cache.isFamilyTreeLines());
-    }
-
-    private void checkSpouseLines(){
         spouseLines.setChecked(cache.isSpouseLines());
-    }
-
-    private void checkFatherSide(){
         fathersSide.setChecked(cache.isFathersSide());
-    }
-
-    private void checkMotherSide(){
         mothersSide.setChecked(cache.isMothersSide());
-    }
-
-    private void checkMaleEvents(){
         maleEvents.setChecked(cache.isMaleEvents());
-    }
-
-    private void checkFemaleEvents(){
-        femaleEvents.setChecked(cache.isMothersSide());
+        femaleEvents.setChecked(cache.isFemaleEvents());
     }
 }

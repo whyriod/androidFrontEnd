@@ -3,6 +3,8 @@
     <string name="app_name">FamilyMap</string>
     <string name="app_search">FamilyMap: Search</string>
     <string name="app_settings">FamilyMap: Settings</string>
+    <string name="event_activity">Family Map: Event</string>
+    <string name="person_activity">Family Map: Person</string>
 
     <!-- Login -->
     <string name="server_host">Server Host:</string>
@@ -18,9 +20,21 @@
     <string name="sign_in">Sign In</string>
     <string name="register">Register</string>
 
-    <!-- Events -->
+    <!-- Map -->
     <string name="event_name">Click a location marker</string>
     <string name="event_desc">To see event information</string>
+
+    <!-- Person -->
+    <string name="person_first">First Name</string>
+    <string name="person_last">Last Name</string>
+    <string name="person_gender">Gender</string>
+    <string name="life_events">Life Events</string>
+    <string name="family">Family</string>
+
+    <!-- Search -->
+    <string name="item_name">Item name</string>
+    <string name="item_details">Item details</string>
+    <string name="item_icon">Item icon</string>
 
     <!-- Settings -->
     <string name="life_story_title">Life Story Lines</string>
@@ -40,5 +54,7 @@
     <string name="logout">Logout</string>
     <string name="logout_desc">RETURN TO LOGIN SCREEN</string>
 
+    <!-- Stuff -->
+    <string name="icon">Icon</string>
 
 </resources>

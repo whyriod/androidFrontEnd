@@ -26,9 +26,12 @@ public class Cereal {
         return sb.toString();
     }
 
+
+
     /*
-    The writeString method shows how to write a String to an OutputStream.
-*/
+     * The writeString method shows how to write a String to an OutputStream.
+     * (Courtesy of class notes)
+     */
     public static void writeString(String str, OutputStream os) throws IOException {
         OutputStreamWriter sw = new OutputStreamWriter(os);
         sw.write(str);
