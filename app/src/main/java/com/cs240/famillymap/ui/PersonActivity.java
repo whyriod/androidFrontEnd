@@ -100,10 +100,11 @@ public class PersonActivity extends AppCompatActivity {
             }
 
             for(String s: cache.getPeopleMap().keySet()){
+                person = cache.getPeopleMap().get(s);
                 String fatherID = person.getFatherID();
                 String motherID = person.getMotherID();
 
-                //Mother || Father
+                //Child
                 if ((fatherID != null && fatherID.equals(personID)) ||
                     (motherID != null && motherID.equals(personID))){
                     r.add(cache.getPeopleMap().get(s));
@@ -111,7 +112,6 @@ public class PersonActivity extends AppCompatActivity {
             }
 
             relatives = r;
-
         }
 
         @Override
